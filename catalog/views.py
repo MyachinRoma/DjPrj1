@@ -5,5 +5,5 @@ def home(request):
     return render(request, 'home.html')
 
 
-class ContactsView(TemplateView):
-    template_name = 'catalog/contacts.html'
+#class ContactsView(TemplateView):
+    #template_name = 'catalog/contacts.html'
