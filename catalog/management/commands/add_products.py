@@ -2,6 +2,14 @@ from django.core.management.base import BaseCommand
 from catalog.models import Category, Product
 
 class Command(BaseCommand):
+    help = 'Load test data from fixture'
+
+    def handle(self, *args, **kwargs):
+        # Удаляем существующие записи
+        Category.objects.all().delete()
+        Product.objects.all().delete()
+
+class Command(BaseCommand):
     help = 'Add products to the database'
 
     def handle(self, *args, **options):
