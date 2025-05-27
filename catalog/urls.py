@@ -6,7 +6,7 @@ from django.contrib import admin
 app_name = CatalogConfig.name
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('', contacts, name='contacts'),
-    path('admin/', admin.site.urls),
+    path("", home, name="home"),
+    path("", contacts, name="contacts"),
+    path("admin/", admin.site.urls),
 ]

@@ -1,0 +1,57 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 11,
+    "fields": {
+        "name": "Овощи",
+        "description": "Свежие"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 12,
+    "fields": {
+        "name": "Фрукты",
+        "description": "Сочные"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 13,
+    "fields": {
+        "name": "Картофель",
+        "description": "Молодой",
+        "image": "",
+        "category": 11,
+        "price": 90,
+        "created_at": "2025-05-06",
+        "updated_at": "2025-05-06"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 14,
+    "fields": {
+        "name": "Морковь",
+        "description": "Мытая",
+        "image": "",
+        "category": 11,
+        "price": 70,
+        "created_at": "2025-05-06",
+        "updated_at": "2025-05-06"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 15,
+    "fields": {
+        "name": "Яблоки",
+        "description": "Зеленые",
+        "image": "",
+        "category": 12,
+        "price": 100,
+        "created_at": "2025-05-06",
+        "updated_at": "2025-05-06"
+    }
+}
+]
