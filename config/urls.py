@@ -1,13 +1,10 @@
-from django.urls import path,include
-from catalog.apps import CatalogConfig
-#from catalog.views import home, contacts
+from django.urls import path, include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
-app_name = CatalogConfig.name
 
 urlpatterns = [
-    #path("", home, name="home"),
-    #path("contacts/", contacts, name="contacts"),
-    path("admin/", admin.site.urls),
-    path("", include("catalog.urls", namespace="catalog")),
-]
+    path("admin/", admin.site.urls), # подключаем админку
+    path('', include('catalog.urls', namespace='catalog')),# подключаем все пути из приложения catalog
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # пробрасываем изображения, чтоб на страничках они отображались
