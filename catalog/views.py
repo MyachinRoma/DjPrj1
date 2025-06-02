@@ -18,5 +18,5 @@ def product_list(request):
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    context = {"products": product}
-    return render(request, 'base.html', context)
+    context = {"product": product}
+    return render(request, 'product_detail.html', context)

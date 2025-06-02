@@ -11,7 +11,7 @@ urlpatterns = [
    #path("", contacts, name="contacts"),
     path("admin/", admin.site.urls),
     path('', product_list, name='product'),
-    path('products/<int:pk>/', product_detail, name='product_detail')
+    path('catalog/<int:pk>/', product_detail, name='product_detail')
 ]
 
 #home, contacts,
