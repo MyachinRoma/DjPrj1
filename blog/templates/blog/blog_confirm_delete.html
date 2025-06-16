@@ -4,7 +4,7 @@
 
   <form method="post">
     {% csrf_token %}
-    <button type="submit">🗑 Подтвердить удаление</button>
+    <button type="submit">Подтвердить удаление</button>
     <a href="{% url 'blog:detail' blog.pk %}">Отмена</a>
   </form>
 {% endblock %}
