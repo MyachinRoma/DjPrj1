@@ -21,7 +21,7 @@ class ProductForm(ModelForm):
         self.fields['image'].widget.attrs.update({'class': 'form-control'})
         self.fields['category'].widget.attrs.update({'class': 'form-control'})
         self.fields['price'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Введите цену'})
-        self.fields['created_at'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Введите дату'})
+        #self.fields['created_at'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Введите дату'})
 
 
     def clean_name(self):
