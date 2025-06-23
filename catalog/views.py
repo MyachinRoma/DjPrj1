@@ -1,15 +1,23 @@
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .forms import ProductForm
 from .models import Product
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
+@login_required
+def my_view(request):
+    return render(request, 'my_template.html')
 
 class ProductListView(ListView):
     model = Product
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
     def get_object(self, queryset=None):
@@ -37,3 +45,18 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:product")
+
+
+class UnpublishProductView(LoginRequiredMixin, View):
+
+    def post(self, request, pk):
+        product = get_object_or_404(Product, id=pk)
+
+        if not request.user.has_perm('catalog.can_unpublish_product'):
+            return HttpResponseForbidden("У вас недостаточно прав для снятия продукта с публикации")
+
+        product.is_published = False
+        product.save()
+
+        return redirect('catalog:product', pk=product.id)
+
