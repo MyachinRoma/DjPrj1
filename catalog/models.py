@@ -24,8 +24,8 @@ class Product(models.Model):
         Category, on_delete=models.CASCADE, related_name="products"
     )
     price = models.BigIntegerField(verbose_name="цена")
-    created_at = models.DateField(verbose_name="дата создания")
-    updated_at = models.DateField(verbose_name="дата последнего изменения", null=True)
+    created_at = models.DateField(auto_now_add=True, verbose_name="дата создания")
+    updated_at = models.DateField(auto_now=True, verbose_name="дата последнего изменения", null=True)
     views_counter = models.PositiveIntegerField(verbose_name="Счетчик просмотров", help_text="Укажите количество просмотров", default=0)
 
     def __str__(self):

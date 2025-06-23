@@ -10,7 +10,7 @@
   <p>{{ blog.content }}</p>
   <p><strong>Просмотров:</strong> {{ blog.number_of_views }}</p>
 
-  <a href="{% url 'blog:update' blog.pk %}">✏️ Редактировать</a> |
-  <a href="{% url 'blog:delete' blog.pk %}">🗑 Удалить</a> |
-  <a href="{% url 'blog:list' %}">← Назад</a>
+  <a href="{% url 'blog:update' blog.pk %}">Редактировать</a> |
+  <a href="{% url 'blog:delete' blog.pk %}">Удалить</a> |
+  <a href="{% url 'blog:list' %}">Назад</a>
 {% endblock %}
