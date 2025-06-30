@@ -11,7 +11,7 @@ from django.shortcuts import render
 
 @login_required
 def my_view(request):
-    return render(request, 'my_template.html')
+    return render(request, 'catalog/home.html')
 
 class ProductListView(ListView):
     model = Product
