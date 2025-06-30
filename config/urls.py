@@ -7,5 +7,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls), # подключаем админку
     path('', include('catalog.urls', namespace='catalog')),# подключаем все пути из приложения catalog
-path('blog/', include('blog.urls', namespace='blog')),# подключаем все пути из приложения blog
+    path('blog/', include('blog.urls', namespace='blog')),# подключаем все пути из приложения blog
+    path('users/', include('users.urls', namespace='users')),# подключаем все пути из приложения users
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # пробрасываем изображения, чтоб на страничках они отображались
