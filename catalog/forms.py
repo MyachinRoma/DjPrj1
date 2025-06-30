@@ -12,6 +12,13 @@ class ProductForm(ModelForm):
         model = Product
         exclude = ("views_counter",)
 
+
+class ProductModeratorForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ("description", "name")
+
+
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget.attrs.update({
