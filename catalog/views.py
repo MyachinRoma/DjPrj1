@@ -1,10 +1,11 @@
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from .forms import ProductForm
+from .forms import ProductForm, ProductModeratorForm
 from .models import Product
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -15,17 +16,19 @@ def my_view(request):
 
 class ProductListView(ListView):
     model = Product
-
+    
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
+
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        self.object.views_counter += 1
-        self.object.save()
-        return self.object
-
+        if self.request.user == self.object.owner():
+            self.object.views_counter += 1
+            self.object.save()
+            return self.object
+        raise PermissionDenied
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
@@ -38,8 +41,18 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product")
 
+
     def get_success_url(self):
         return reverse("catalog:product_detail", args=[self.kwargs.get("pk")])
+
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if user.has_perms("catalog.can_edit_name") and user.has_perms("catalog.can_edit_description"):
+            return ProductModeratorForm
+        raise PermissionDenied
 
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -59,4 +72,3 @@ class UnpublishProductView(LoginRequiredMixin, View):
         product.save()
 
         return redirect('catalog:product', pk=product.id)
-
