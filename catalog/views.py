@@ -6,9 +6,11 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .forms import ProductForm, ProductModeratorForm
-from .models import Product
+from .models import Product, Category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from .services import get_product_from_cache
+
 
 @login_required
 def my_view(request):
@@ -16,7 +18,15 @@ def my_view(request):
 
 class ProductListView(ListView):
     model = Product
-    
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = Category.objects.all()
+        context['products_list'] = category
+        return context
+
+    def get_queryset(self):
+        return get_product_from_cache()
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
