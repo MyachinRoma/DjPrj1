@@ -16,17 +16,23 @@ from .services import get_product_from_cache
 def my_view(request):
     return render(request, 'catalog/home.html')
 
+class ProductService:
+    @staticmethod
+    def get_products_by_category(category_id):
+        return Product.objects.filter(category_id=category_id)
+
 class ProductListView(ListView):
     model = Product
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        category = Category.objects.all()
-        context['products_list'] = category
-        return context
-
     def get_queryset(self):
         return get_product_from_cache()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.request.GET.get('category_id')
+        if category_id:
+            context['products'] = ProductService.get_products_by_category(category_id)
+        return context
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
