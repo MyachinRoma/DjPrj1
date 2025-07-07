@@ -25,14 +25,11 @@ class ProductListView(ListView):
     model = Product
 
     def get_queryset(self):
-        return get_product_from_cache()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        category_id = self.request.GET.get('category_id')
+        category_id = self.kwargs.get('category_id')
         if category_id:
-            context['products'] = ProductService.get_products_by_category(category_id)
-        return context
+            return ProductService.get_products_by_category(category_id)
+        else:
+            return get_product_from_cache()
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
