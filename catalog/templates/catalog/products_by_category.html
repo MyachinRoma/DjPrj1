@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+{% block title %} Поиск по категориям {% endblock %}
+{% block content %}
+{% include 'header.html' %}
+    <!-- Список товаров -->
+<div class="album py-5 bg-body-tertiary">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+{% for product in category_products %}
+    <div class="col">
+      <div class="card w-75" >
+        <img src = "{{product.image | media_filter }}" class="card-img-top" alt={{product.name}} height = 300>
+        <div class="card-body">
+          <h5 class="card-title">{{product.name}}</h5>
+          <p class="card-text">{{product.description|truncatechars:100|default:"Описание отсутствует"}}</p>
+          {% if user.is_authenticated %}
+            <a href="{% url 'catalog:product_info' product.pk %}" class="btn btn-primary">Полная информация</a>
+            {% if user == product.owner %}
+            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-sm btn-secondary ml-3">Редактировать</a>
+            {% endif %}
+            {% if user == product.owner or perms.catalog.can_delete_any_product %}
+            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-sm btn-danger ml-1">Удалить</a>
+            {% endif %}
+          {% else %}
+          <p>Пожалуйста, зарегестрируетесь</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+{% endfor %}
+    </div>
+</div>
+{% endblock %}

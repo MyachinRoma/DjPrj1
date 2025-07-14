@@ -6,17 +6,30 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from .forms import ProductForm, ProductModeratorForm
-from .models import Product
+from .models import Product, Category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from .services import get_product_from_cache
+
 
 @login_required
 def my_view(request):
     return render(request, 'catalog/home.html')
 
+class ProductService:
+    @staticmethod
+    def get_products_by_category(category_id):
+        return Product.objects.filter(category_id=category_id)
+
 class ProductListView(ListView):
     model = Product
-    
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id')
+        if category_id:
+            return ProductService.get_products_by_category(category_id)
+        else:
+            return get_product_from_cache()
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
